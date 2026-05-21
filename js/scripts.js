@@ -6980,7 +6980,7 @@ function updateAuthUI() {
                 <h2 style="margin-top: 10px; font-weight: bold; font-family: monospace; font-size: 1.8em; letter-spacing: 1px; word-break: break-all; color: var(--primary-dark);">${lastScannedUID}</h2>`;
         } else {
             notSignedInMsg.innerHTML = `
-                <h3><i class="fa-solid fa-circle-info"></i> Welcome to Stando</h3>
+                <h3><i class="fa-solid fa-circle-info"></i> Welcome to <strong>S</strong>mart <strong>T</strong>ap <strong>A</strong>ttendance <strong>N</strong>etwork & <strong>D</strong>ata <strong>O</strong>rganiser</h3>
                 <p>Please sign in with your <b>EPOKA Mail</b> to track your attendance.</p>`;
         }
 

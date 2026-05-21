@@ -3993,7 +3993,7 @@ async function onSuccessfulAuth(isRestore = false) {
             currentUser = {
                 email: userInfoResponse.result.email,
                 name: userInfoResponse.result.name,
-                picture: userInfoResponse.result.picture
+                picture: normalizeGooglePhotoUrl(userInfoResponse.result.picture)
             };
         }
 
@@ -4249,6 +4249,13 @@ function handleTokenResponse(resp) {
  * Fetch user info (profile) from Google.
  * @returns {Promise} A promise that resolves when user info is fetched.
  */
+function normalizeGooglePhotoUrl(url) {
+    if (!url) return url;
+    // Strip any existing size param, then append =s96-c for the CDN-cached 96px version.
+    // This avoids 429s caused by multiple img tags hitting the same uncached URL.
+    return url.replace(/=s\d+(-c)?$/, '') + '=s96-c';
+}
+
 async function fetchUserInfo() {
     try {
         const tokenObj = gapi.client.getToken();
@@ -4283,7 +4290,7 @@ async function fetchUserInfo() {
             id: userInfo.sub,
             name: userInfo.name || userInfo.email,
             email: userInfo.email,
-            picture: userInfo.picture || avatarUrl
+            picture: normalizeGooglePhotoUrl(userInfo.picture) || avatarUrl
         };
 
         // Update user info in UI
@@ -6973,7 +6980,7 @@ function updateAuthUI() {
                 <h2 style="margin-top: 10px; font-weight: bold; font-family: monospace; font-size: 1.8em; letter-spacing: 1px; word-break: break-all; color: var(--primary-dark);">${lastScannedUID}</h2>`;
         } else {
             notSignedInMsg.innerHTML = `
-                <h3><i class="fa-solid fa-circle-info"></i> Welcome to Quorum</h3>
+                <h3><i class="fa-solid fa-circle-info"></i> Welcome to Stando</h3>
                 <p>Please sign in with your <b>EPOKA Mail</b> to track your attendance.</p>`;
         }
 
@@ -9638,6 +9645,7 @@ function updateLogsList() {
                        <p style="font-size: 0.9em; color: #999;">Choose a course above to view its attendance history.</p>`;
         emptyLogs.style.display = 'block';
         tableContainer.classList.remove('reloading');
+        const _fsb = document.getElementById('floating-sticky-bar'); if (_fsb) _fsb.style.display = 'none';
         return;
     }
 
@@ -9649,6 +9657,7 @@ function updateLogsList() {
         emptyLogs.innerHTML = `<div class="loading-spinner" style="margin: 20px auto;"></div><p style="text-align: center;">Loading logs...</p>`;
         emptyLogs.style.display = 'block';
         tableContainer.classList.remove('reloading');
+        const _fsb = document.getElementById('floating-sticky-bar'); if (_fsb) _fsb.style.display = 'none';
         return; // Stop here and wait for the next updateUI() call
     }
 
@@ -9785,6 +9794,7 @@ function updateLogsList() {
                 currentDay = thisDay;
                 const separatorRow = document.createElement('tr');
                 separatorRow.setAttribute('class', 'day-separator');
+                separatorRow.dataset.date = thisDay;
                 const separatorCell = document.createElement('td');
                 separatorCell.colSpan = 100; // Span across all columns (100 is effectively "all")
 
@@ -9976,8 +9986,107 @@ function updateLogsList() {
     if (isChangingCourses) {
         isChangingCourses = false;
     }
+
+    setupStickyDateBar();
 }
 
+
+function setupStickyDateBar() {
+    let bar = document.getElementById('floating-sticky-bar');
+    if (!bar) {
+        bar = document.createElement('div');
+        bar.id = 'floating-sticky-bar';
+
+        const inner = document.createElement('div');
+        inner.className = 'floating-bar-inner';
+
+        const badge = document.createElement('div');
+        badge.id = 'floating-date-badge';
+        badge.className = 'day-separator-date';
+
+        const eisBtn = document.createElement('button');
+        eisBtn.id = 'floating-eis-btn';
+        eisBtn.className = 'btn-sm eis-day-btn';
+        eisBtn.innerHTML = '<i class="fa-solid fa-list-check"></i> Add to EIS';
+        eisBtn.onclick = () => { if (bar._activeDate) showDirectEisExportDialog(bar._activeDate); };
+
+        inner.appendChild(badge);
+        inner.appendChild(eisBtn);
+        bar.appendChild(inner);
+        document.body.appendChild(bar);
+    }
+
+    const badge = bar.querySelector('#floating-date-badge');
+
+    if (window._stickyDateScrollHandler) {
+        window.removeEventListener('scroll', window._stickyDateScrollHandler, true);
+    }
+
+    let currentActiveDate = null;
+    let exitTimer = null;
+
+    function playAnim(name, duration, easing) {
+        bar.style.animation = 'none';
+        bar.offsetHeight;
+        bar.style.animation = `${name} ${duration}ms ${easing} forwards`;
+    }
+
+    function enter(date) {
+        bar._activeDate = date;
+        badge.innerHTML = `<i class="fa-solid fa-calendar-day"></i> ${escapeHtml(date)}`;
+        clearTimeout(exitTimer);
+        bar.style.display = 'block';
+        playAnim('badge-fly-in', 220, 'ease-out');
+    }
+
+    function swap(date) {
+        bar._activeDate = date;
+        // Fade out, swap text, fade back in
+        badge.style.transition = 'opacity 80ms ease';
+        badge.style.opacity = '0';
+        clearTimeout(exitTimer);
+        exitTimer = setTimeout(() => {
+            badge.innerHTML = `<i class="fa-solid fa-calendar-day"></i> ${escapeHtml(date)}`;
+            badge.style.opacity = '1';
+        }, 80);
+    }
+
+    function exit() {
+        bar._activeDate = null;
+        bar.style.animation = 'badge-fly-out 200ms ease-in forwards';
+        clearTimeout(exitTimer);
+        exitTimer = setTimeout(() => { bar.style.display = 'none'; }, 200);
+    }
+
+    function onScroll() {
+        const rows = document.querySelectorAll('tr.day-separator[data-date]');
+        let activeDate = null;
+        for (const row of rows) {
+            if (row.getBoundingClientRect().bottom <= 1) {
+                activeDate = row.dataset.date;
+            } else {
+                break;
+            }
+        }
+
+        if (activeDate === currentActiveDate) return;
+
+        if (!activeDate) {
+            currentActiveDate = null;
+            exit();
+        } else if (currentActiveDate === null) {
+            currentActiveDate = activeDate;
+            enter(activeDate);
+        } else {
+            currentActiveDate = activeDate;
+            swap(activeDate);
+        }
+    }
+
+    window._stickyDateScrollHandler = onScroll;
+    window.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    onScroll();
+}
 
 /**
 * Calculate the course week for a specific date.
@@ -10306,7 +10415,7 @@ function updatePageTitle() {
         const titleName = currentCourse.replace(/_/g, ' ');
         document.title = `${titlePrefix}${titleName} Attendance`;
     } else {
-        document.title = `${titlePrefix}Quorum`;
+        document.title = `${titlePrefix}Stando`;
     }
 }
 

@@ -230,7 +230,6 @@
         }
 
         .modern-course-card:hover {
-            transform: scale(1.02);
             box-shadow: var(--shadow-lg);
             border-color: var(--primary-light);
         }
@@ -2730,6 +2729,43 @@
         .day-separator-date i,
         .day-separator-date svg {
             font-size: 0.9em;
+        }
+
+        #floating-sticky-bar {
+            position: fixed;
+            top: 10px;
+            left: 0;
+            right: 0;
+            z-index: 90;
+            display: none;
+            pointer-events: none;
+        }
+
+        .floating-bar-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #floating-sticky-bar #floating-eis-btn {
+            position: absolute;
+            right: 60px;
+            pointer-events: auto;
+            border-radius: var(--border-radius-lg);
+        }
+
+        @keyframes badge-fly-in {
+            0%   { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes badge-fly-out {
+            0%   { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-8px); }
         }
 
         .day-separator-checkbox {
@@ -5265,6 +5301,10 @@
                 display: none !important;
             }
 
+            #floating-sticky-bar #floating-eis-btn {
+                display: none;
+            }
+
             /* 3. Revert the date alignment to the left for mobile */
             .day-separator-date {
                 flex-grow: 0;
@@ -5720,6 +5760,10 @@
             .day-separator-content {
                 justify-content: flex-start;
                 padding-right: 90px;
+            }
+
+            #floating-sticky-bar .floating-bar-inner {
+                justify-content: flex-start;
             }
 
             .day-separator-date {

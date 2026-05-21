@@ -21,6 +21,7 @@
             /* Spacing & Layout */
             --spacing-unit: 4px;
             --border-radius: 12px;
+            --border-radius-lg: 20px;
             --border-radius-sm: 8px;
 
             /* Shadows & Depth */
@@ -229,7 +230,7 @@
         }
 
         .modern-course-card:hover {
-            transform: translateY(-4px);
+            transform: scale(1.02);
             box-shadow: var(--shadow-lg);
             border-color: var(--primary-light);
         }
@@ -426,8 +427,7 @@
             width: 100%;
         }
 
-        .action-chip,
-        .action-chip.has-items {
+        .action-chip {
             flex-grow: 1;
             min-width: 140px;
             display: inline-flex;
@@ -435,11 +435,10 @@
             align-items: center;
             gap: 8px;
 
-            background-color: #fff8e1;
-            /* Very light orange tint */
-            color: #e65100;
+            background-color: #f5f5f5;
+            color: #888;
 
-            border: 1px solid #ffb74d;
+            border: 1px solid #ddd;
             padding: 8px 16px;
             border-radius: 12px;
 
@@ -451,14 +450,18 @@
             cursor: pointer;
             user-select: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            /* Default Raised Shadow */
 
-            /* Smooth transition for colors, NO transform to avoid jumping */
             transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.1s;
             transform: scale(1);
         }
 
-        /* Hover: Highlight only, NO movement */
+        .action-chip.has-items {
+            background-color: #fff8e1;
+            color: #e65100;
+            border: 1px solid #ffb74d;
+        }
+
+        /* Hover: grey chip */
         .action-chip:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
@@ -466,10 +469,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
         }
 
-        /* Hovering a chip with items */
+        /* Hover: orange chip */
         .action-chip.has-items:hover {
             background-color: #fff3e0;
-            /* Light orange tint on hover */
             border-color: #f57c00;
             color: #e65100;
             box-shadow: 0 4px 8px rgba(255, 183, 77, 0.2);
@@ -656,19 +658,25 @@
         .dark-mode .action-chip {
             background: #2c2c2e;
             border-color: #444;
-            color: #e0e0e0;
+            color: #888;
         }
 
         .dark-mode .action-chip:hover {
             background: #333;
             border-color: var(--primary-light);
+            color: var(--primary-light);
         }
 
         .dark-mode .action-chip.has-items {
             background: #4a2c0f;
-            /* Dark Orange */
             color: #ffcc80;
             border-color: #ffb74d;
+        }
+
+        .dark-mode .action-chip.has-items:hover {
+            background: #5a3510;
+            border-color: #f57c00;
+            color: #ffcc80;
         }
 
         .dark-mode .action-chip.active {
@@ -689,13 +697,15 @@
             animation: fadeIn 0.2s ease-out;
         }
 
-        .email-pill i {
+        .email-pill i,
+        .email-pill svg {
             cursor: pointer;
             opacity: 0.6;
             transition: opacity 0.2s;
         }
 
-        .email-pill i:hover {
+        .email-pill i:hover,
+        .email-pill svg:hover {
             opacity: 1;
             color: var(--danger-color);
         }
@@ -715,7 +725,8 @@
             /* Prevent overflow in flex containers */
         }
 
-        .input-with-icon i {
+        .input-with-icon i,
+        .input-with-icon svg {
             position: absolute;
             left: 12px;
             top: 50%;
@@ -929,31 +940,45 @@
             padding: 5px 10px;
             border-radius: 15px;
             background-color: rgba(0, 0, 0, 0.05);
+            -webkit-user-select: none;
+            /* Safari, Chrome, Opera, Edge */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+            /* Standard property */
             /* Roundness 50 makes corners soft, Width 90 saves space */
             font-variation-settings: "ROND" 50, "wdth" 90, "wght" 500;
         }
 
-        .sync-status.online i {
+        .sync-status.online i,
+        .sync-status.online svg {
             color: var(--success-color);
         }
 
-        .sync-status.offline i {
+        .sync-status.offline i,
+        .sync-status.offline svg {
             color: var(--warning-color);
         }
 
-        .sync-status.syncing i {
+        .sync-status.syncing i,
+        .sync-status.syncing svg {
             color: var(--info-color);
         }
 
-        .sync-status.error i {
+        .sync-status.error i,
+        .sync-status.error svg {
             color: var(--danger-color);
         }
 
-        .sync-status.waiting i {
+        .sync-status.waiting i,
+        .sync-status.waiting svg {
             color: var(--secondary-color);
         }
 
-        .sync-status.success i {
+        .sync-status.success i,
+        .sync-status.success svg {
             color: var(--success-color);
         }
 
@@ -1117,6 +1142,18 @@
             background-color: #333;
         }
 
+        .other-admin-course {
+            opacity: 0.55;
+        }
+
+        .other-admin-course:hover {
+            opacity: 1;
+        }
+
+        .dark-mode .other-admin-course:hover {
+            opacity: 1;
+        }
+
         /* For links acting as buttons */
         a.btn-icon,
         a.btn-sm {
@@ -1190,7 +1227,8 @@
             align-items: center;
         }
 
-        h1 i {
+        h1 i,
+        h1 svg {
             margin-right: 10px;
         }
 
@@ -1216,17 +1254,25 @@
             font-size: 0.9em;
             vertical-align: middle;
             line-height: 30px;
-            /* Adjust this to match your text height */
+            transition: all 0.2s ease;
         }
 
-        .info-item:first-child {
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
+        .info-item.first-in-row {
+            border-top-left-radius: var(--border-radius) !important;
+            border-bottom-left-radius: var(--border-radius) !important;
         }
 
-        .info-item:last-child {
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
+        .info-item.last-in-row {
+            border-top-right-radius: var(--border-radius) !important;
+            border-bottom-right-radius: var(--border-radius) !important;
+        }
+
+        .info-item.only-in-row {
+            border-radius: var(--border-radius) !important;
+        }
+
+        .info-item.middle-in-row {
+            border-radius: var(--border-radius) !important;
         }
 
         .tabs {
@@ -1257,7 +1303,7 @@
             border: 2px solid transparent;
             background: transparent;
             color: #eff2ff;
-            border-radius: 8px;
+            border-radius: var(--border-radius-sm);
         }
 
         /* Hover state for an INACTIVE tab */
@@ -1279,16 +1325,17 @@
             background-color: #000c503b;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
             transform: scale(0.96);
+            border-radius: var(--border-radius-lg);
         }
 
         .tab:first-child {
-            border-top-left-radius: 18px;
-            border-bottom-left-radius: 18px;
+            border-top-left-radius: var(--border-radius-lg);
+            border-bottom-left-radius: var(--border-radius-lg);
         }
 
         .tab:last-child {
-            border-top-right-radius: 18px;
-            border-bottom-right-radius: 18px;
+            border-top-right-radius: var(--border-radius-lg);
+            border-bottom-right-radius: var(--border-radius-lg);
         }
 
         .tab-content {
@@ -1317,7 +1364,8 @@
         }
 
         /* Use a lighter neutral grey for icons in dark mode */
-        .dark-mode .actions-cell .btn-icon i {
+        .dark-mode .actions-cell .btn-icon i,
+        .dark-mode .actions-cell .btn-icon svg {
             color: var(--primary-light);
         }
 
@@ -1327,15 +1375,18 @@
         }
 
         /* Use lighter theme colours for the icon hover in dark mode */
-        .dark-mode .actions-cell .btn-icon.btn-green:hover i {
+        .dark-mode .actions-cell .btn-icon.btn-green:hover i,
+        .dark-mode .actions-cell .btn-icon.btn-green:hover svg {
             color: var(--success-color-light);
         }
 
-        .dark-mode .actions-cell .btn-icon.btn-red:hover i {
+        .dark-mode .actions-cell .btn-icon.btn-red:hover i,
+        .dark-mode .actions-cell .btn-icon.btn-red:hover svg {
             color: var(--danger-color-light);
         }
 
-        .dark-mode .actions-cell .btn-icon.btn-blue:hover i {
+        .dark-mode .actions-cell .btn-icon.btn-blue:hover i,
+        .dark-mode .actions-cell .btn-icon.btn-blue:hover svg {
             color: var(--info-color-light);
         }
 
@@ -1433,7 +1484,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-start;
-            gap: 6px 4px;
+            gap: 4px 3px;
             overflow-x: visible;
             margin-bottom: 20px;
         }
@@ -1466,6 +1517,7 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
             border-color: var(--primary-light);
+            border-radius: var(--border-radius-lg);
         }
 
         /* --- Bulk Select Mode --- */
@@ -1667,14 +1719,22 @@
             font-weight: bold;
         }
 
-        .course-button:first-child {
-            border-top-left-radius: 18px;
-            border-bottom-left-radius: 18px;
+        .course-button.first-in-row {
+            border-top-left-radius: var(--border-radius-lg) !important;
+            border-bottom-left-radius: var(--border-radius-lg) !important;
         }
 
-        .course-button:last-child {
-            border-top-right-radius: 18px;
-            border-bottom-right-radius: 18px;
+        .course-button.last-in-row {
+            border-top-right-radius: var(--border-radius-lg) !important;
+            border-bottom-right-radius: var(--border-radius-lg) !important;
+        }
+
+        .course-button.only-in-row {
+            border-radius: var(--border-radius-lg) !important;
+        }
+
+        .course-button.middle-in-row {
+            border-radius: var(--border-radius-lg) !important;
         }
 
         .course-button:hover {
@@ -1695,6 +1755,7 @@
                 inset 0 -1px 2px rgba(255, 255, 255, 0.25);
             /* bottom light rim */
             transform: scale(0.96);
+            border-radius: var(--border-radius-lg);
             border-color: var(--primary-color);
         }
 
@@ -1702,6 +1763,7 @@
             background-color: #e8eaf6;
             color: #2c3a8e;
             transform: scale(0.98);
+            border-radius: var(--border-radius-lg);
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
             border-color: transparent;
         }
@@ -1757,7 +1819,8 @@
             align-items: center;
         }
 
-        .module-title i {
+        .module-title i,
+        .module-title svg {
             margin-right: 10px;
         }
 
@@ -1852,7 +1915,8 @@
             width: 100%;
         }
 
-        .big-scan-button i {
+        .big-scan-button i,
+        .big-scan-button svg {
             font-size: 1.5em;
         }
 
@@ -2095,16 +2159,7 @@
             background-color: #666;
         }
 
-        .dark-mode body {
-            /* Base Grade of 25 adds just a hint of thickness */
-            font-variation-settings: "wdth" 100, "GRAD" 25, "slnt" 0;
-        }
-
-        /* Increase heading grade in dark mode too */
-        .dark-mode h1,
-        .dark-mode h2 {
-            font-variation-settings: "wdth" 100, "GRAD" 50, "slnt" 0;
-        }
+        /* Font-variation-settings removed from dark-mode body, h1, and h2 to keep typography weights identical to light mode, preventing layout reflow and width shifts. */
 
         #admin-welcome-message {
             text-align: center;
@@ -2439,13 +2494,15 @@
             }
         }
 
-        .in-page-notification i {
+        .in-page-notification i,
+        .in-page-notification svg {
             margin-right: 10px;
             font-size: 1.2em;
         }
 
         /* Make icon properly aligned */
-        .in-page-notification i:first-child {
+        .in-page-notification i:first-child,
+        .in-page-notification svg:first-child {
             margin-top: 1px;
             /* Fine-tune vertical alignment */
         }
@@ -2551,7 +2608,7 @@
             display: flex;
             flex-wrap: nowrap;
             /* Forces buttons into a single row */
-            gap: 2px;
+            gap: 1px;
         }
 
         .logs-actions .btn-icon,
@@ -2569,12 +2626,13 @@
 
         .logs-table tr.day-separator .btn-icon:active {
             transform: scale(0.96);
-            /* We remove translateY because the button is no longer absolutely positioned */
             filter: brightness(90%);
+            border-radius: var(--border-radius);
         }
 
         .logs-table tr.day-separator .btn-icon.active {
             transform: translateY(-50%) scale(0.90);
+            border-radius: var(--border-radius);
         }
 
         /* Round the LEFT corners of the FIRST button in each group */
@@ -2582,8 +2640,8 @@
         .database-actions .btn-icon:first-child,
         .logs-actions .btn:first-child,
         .database-actions .btn:first-child {
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
         }
 
         /* Round the RIGHT corners of the LAST button in each group */
@@ -2591,21 +2649,21 @@
         .database-actions .btn-icon:last-child,
         .logs-actions .btn:last-child,
         .database-actions .btn:last-child {
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
         }
 
         .logs-table tr.day-separator .btn-icon:first-of-type {
             /* Use first-of-type for robustness */
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
         }
 
         /* 4. Round the RIGHT corners of the LAST button */
         .logs-table tr.day-separator .btn-icon:last-of-type {
             /* Use last-of-type for robustness */
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
         }
 
         /* Modern Table responsiveness fixes */
@@ -2669,7 +2727,8 @@
             box-shadow: 0 2px 6px rgba(92, 107, 192, 0.25);
         }
 
-        .day-separator-date i {
+        .day-separator-date i,
+        .day-separator-date svg {
             font-size: 0.9em;
         }
 
@@ -2689,19 +2748,19 @@
 
         /* Round the LEFT corners of the FIRST button */
         .day-separator-actions button:first-child {
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
+            border-top-left-radius: var(--border-radius-lg);
+            border-bottom-left-radius: var(--border-radius-lg);
         }
 
         /* Round the RIGHT corners of the LAST button */
         .day-separator-actions button:last-child {
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
+            border-top-right-radius: var(--border-radius-lg);
+            border-bottom-right-radius: var(--border-radius-lg);
         }
 
         .day-separator-actions .eis-day-btn {
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
+            border-top-left-radius: var(--border-radius-lg);
+            border-bottom-left-radius: var(--border-radius-lg);
         }
 
         /* The click effect now works correctly without "flying away" */
@@ -2760,12 +2819,12 @@
         /* Round top corners of first/last header cells */
         .logs-table th:first-child,
         .database-table th:first-child {
-            border-top-left-radius: 15px;
+            border-top-left-radius: var(--border-radius-lg);
         }
 
         .logs-table th:last-child,
         .database-table th:last-child {
-            border-top-right-radius: 15px;
+            border-top-right-radius: var(--border-radius-lg);
         }
 
         .logs-table th.sortable:hover,
@@ -2825,13 +2884,13 @@
         }
 
         .uid-badge:first-child {
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
+            border-top-left-radius: var(--border-radius-sm);
+            border-bottom-left-radius: var(--border-radius-sm);
         }
 
         .uid-badge:last-child {
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
+            border-top-right-radius: var(--border-radius-sm);
+            border-bottom-right-radius: var(--border-radius-sm);
         }
 
         .name-cell {
@@ -2914,15 +2973,15 @@
             /* Tighter gap between time pills */
         }
 
-        /* Fix rounding: Now targets the first TAG inside the WRAPPER */
+        /* Now targets the first TAG inside the WRAPPER */
         .pills-wrapper .time-tag:first-child {
-            border-top-left-radius: 12px;
-            border-bottom-left-radius: 12px;
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
         }
 
         .pills-wrapper .time-tag:last-child {
-            border-top-right-radius: 12px;
-            border-bottom-right-radius: 12px;
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
         }
 
         .times-cell {
@@ -2935,7 +2994,6 @@
             display: inline-flex;
             align-items: center;
         }
-
 
 
         .time-tag {
@@ -2966,16 +3024,17 @@
 
         .time-tag:hover {
             border: 1px solid var(--primary-color);
+            border-radius: 12px;
         }
 
         .time-tag:first-child {
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
+            border-top-left-radius: var(--border-radius-lg);
+            border-bottom-left-radius: var(--border-radius-lg);
         }
 
         .time-tag:last-child {
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
+            border-top-right-radius: var(--border-radius-lg);
+            border-bottom-right-radius: var(--border-radius-lg);
         }
 
         .logs-table .actions-cell,
@@ -2989,7 +3048,7 @@
             display: inline-flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
         }
 
         /* Prevent course/category text from wrapping */
@@ -3026,7 +3085,7 @@
         .actions-cell .btn-icon {
             width: 30px;
             height: 30px;
-            border-radius: 4px;
+            border-radius: 8px;
             background-color: transparent;
             border-color: transparent;
             box-shadow: none;
@@ -3034,17 +3093,18 @@
 
         /* Round the LEFT corners of the FIRST button */
         .actions-cell .btn-icon:first-child {
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
+            border-top-left-radius: var(--border-radius-lg);
+            border-bottom-left-radius: var(--border-radius-lg);
         }
 
         /* Round the RIGHT corners of the LAST button */
         .actions-cell .btn-icon:last-child {
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
+            border-top-right-radius: var(--border-radius-lg);
+            border-bottom-right-radius: var(--border-radius-lg);
         }
 
-        .actions-cell .btn-icon i {
+        .actions-cell .btn-icon i,
+        .actions-cell .btn-icon svg {
             color: var(--primary-color);
             /* A standard, medium-grey for icons */
             transition: color 0.2s ease-out;
@@ -3081,19 +3141,23 @@
             /* Ensures background stays transparent */
         }
 
-        .dark-mode .actions-cell-content .btn-icon i {
+        .dark-mode .actions-cell-content .btn-icon i,
+        .dark-mode .actions-cell-content .btn-icon svg {
             color: #bdbdbd;
         }
 
-        .dark-mode .actions-cell-content .btn-icon.btn-green:hover i {
+        .dark-mode .actions-cell-content .btn-icon.btn-green:hover i,
+        .dark-mode .actions-cell-content .btn-icon.btn-green:hover svg {
             color: var(--success-color-light);
         }
 
-        .dark-mode .actions-cell-content .btn-icon.btn-red:hover i {
+        .dark-mode .actions-cell-content .btn-icon.btn-red:hover i,
+        .dark-mode .actions-cell-content .btn-icon.btn-red:hover svg {
             color: var(--danger-color-light);
         }
 
-        .dark-mode .actions-cell-content .btn-icon.btn-blue:hover i {
+        .dark-mode .actions-cell-content .btn-icon.btn-blue:hover i,
+        .dark-mode .actions-cell-content .btn-icon.btn-blue:hover svg {
             color: var(--info-color-light);
         }
 
@@ -3110,17 +3174,20 @@
         }
 
         /* Change the ICON color to green on hover */
-        .actions-cell .btn-icon.btn-green:hover i {
+        .actions-cell .btn-icon.btn-green:hover i,
+        .actions-cell .btn-icon.btn-green:hover svg {
             color: var(--success-color);
         }
 
         /* Change the ICON color to red on hover */
-        .actions-cell .btn-icon.btn-red:hover i {
+        .actions-cell .btn-icon.btn-red:hover i,
+        .actions-cell .btn-icon.btn-red:hover svg {
             color: var(--danger-color);
         }
 
         /* Change the ICON color to blue on hover */
-        .actions-cell .btn-icon.btn-blue:hover i {
+        .actions-cell .btn-icon.btn-blue:hover i,
+        .actions-cell .btn-icon.btn-blue:hover svg {
             color: var(--info-color);
         }
 
@@ -3136,7 +3203,8 @@
         .actions-cell .btn-icon i,
         .logs-table .day-separator .btn-icon i,
         .delete-time-btn.btn-icon i,
-        #sync-btn.btn-icon i {
+        #sync-btn.btn-icon i,
+        #sync-btn.btn-icon svg {
             font-size: 0.85em;
             /* Slightly reduce the icon size */
         }
@@ -3209,7 +3277,8 @@
             align-items: center;
         }
 
-        .notification i {
+        .notification i,
+        .notification svg {
             margin-right: 10px;
             font-size: 1.2em;
         }
@@ -3542,7 +3611,8 @@
             /* Ultra slim height */
         }
 
-        .reason-card i {
+        .reason-card i,
+        .reason-card svg {
             font-size: 1em;
             /* Small Icon */
             color: #999;
@@ -3569,7 +3639,8 @@
             color: var(--primary-color);
         }
 
-        .reason-card:hover:not(.active) i {
+        .reason-card:hover:not(.active) i,
+        .reason-card:hover:not(.active) svg {
             color: var(--primary-color);
         }
 
@@ -3582,7 +3653,8 @@
             transform: scale(0.98);
         }
 
-        .reason-card.active i {
+        .reason-card.active i,
+        .reason-card.active svg {
             color: var(--primary-color);
         }
 
@@ -3599,7 +3671,8 @@
             color: var(--primary-light);
         }
 
-        .dark-mode .reason-card:hover:not(.active) i {
+        .dark-mode .reason-card:hover:not(.active) i,
+        .dark-mode .reason-card:hover:not(.active) svg {
             color: var(--primary-light);
         }
 
@@ -3609,7 +3682,8 @@
             border-color: transparent;
         }
 
-        .dark-mode .reason-card.active i {
+        .dark-mode .reason-card.active i,
+        .dark-mode .reason-card.active svg {
             color: white;
         }
 
@@ -3642,9 +3716,7 @@
             flex-grow: 1;
             margin-top: 0;
             flex-shrink: 1;
-            /* ADD THIS: Explicitly allow the input to shrink */
             min-width: 0;
-            /* ADD THIS: Override the browser's default minimum width */
         }
 
         .dialog .form-control:focus {
@@ -3677,7 +3749,8 @@
             background-color: rgba(0, 0, 0, 0.05);
         }
 
-        .collapsible-trigger i {
+        .collapsible-trigger i,
+        .collapsible-trigger svg {
             margin-left: 5px;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -3765,7 +3838,7 @@
             flex: 1;
             /* Grow to fill space */
             display: flex;
-            gap: 3px;
+            gap: 2px;
             margin-bottom: 0 !important;
         }
 
@@ -3776,7 +3849,6 @@
             justify-content: center;
             white-space: nowrap;
             padding: 12px 5px;
-            border-radius: 6px;
         }
 
         /* 2. Group Container (Right Side) */
@@ -3784,7 +3856,7 @@
             flex: 0 0 auto;
             /* Shrink to fit content */
             display: flex;
-            gap: 3px;
+            gap: 2px;
             margin-bottom: 0 !important;
         }
 
@@ -3795,28 +3867,10 @@
             padding: 12px 5px;
             justify-content: center;
             text-align: center;
-            border-radius: 6px;
         }
 
-        #session-category-group .course-button:first-child {
-            border-top-left-radius: 18px;
-            border-bottom-left-radius: 18px;
-        }
-
-        #session-category-group .course-button:last-child {
-            border-top-right-radius: 18px;
-            border-bottom-right-radius: 18px;
-        }
-
-        #session-group-container .course-button:first-child {
-            border-top-left-radius: 18px;
-            border-bottom-left-radius: 18px;
-        }
-
-        #session-group-container .course-button:last-child {
-            border-top-right-radius: 18px;
-            border-bottom-right-radius: 18px;
-        }
+        /* Row-aware rounding is now handled by the .first-in-row / .last-in-row
+           classes applied dynamically by updateButtonRows() in scripts.js */
 
         /* ===== Base button (global) ===== */
         .toggle-button {
@@ -4663,11 +4717,6 @@
         .dark-mode .database-table th {
             background-color: #333;
             color: #f0f0f0;
-        }
-
-        .dark-mode .logs-table tr:hover,
-        .dark-mode .database-table tr:hover {
-            background-color: #383838;
         }
 
         .dark-mode .logs-table td,
@@ -5522,9 +5571,9 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
-            padding: 15px 0;
-            margin-top: 10px;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 10px 0;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             font-family: 'Google Sans Flex', sans-serif;
         }
 
@@ -5584,7 +5633,8 @@
         }
 
         /* Fix icon color - arrows should be visible */
-        .pagination-btn i {
+        .pagination-btn i,
+        .pagination-btn svg {
             color: var(--primary-color);
         }
 
@@ -5600,12 +5650,13 @@
             cursor: not-allowed;
         }
 
-        .pagination-btn:disabled i {
+        .pagination-btn:disabled i,
+        .pagination-btn:disabled svg {
             color: #999;
         }
 
         .dark-mode .pagination-controls {
-            border-top-color: rgba(255, 255, 255, 0.08);
+            border-bottom-color: rgba(255, 255, 255, 0.08);
         }
 
         .dark-mode .page-btn {
@@ -5620,7 +5671,8 @@
             border-color: #444;
         }
 
-        .dark-mode .pagination-btn i {
+        .dark-mode .pagination-btn i,
+        .dark-mode .pagination-btn svg {
             color: #aaa;
         }
 
@@ -5684,7 +5736,8 @@
                 font-size: 0.75em;
             }
 
-            .day-separator-actions .eis-day-btn i {
+            .day-separator-actions .eis-day-btn i,
+            .day-separator-actions .eis-day-btn svg {
                 display: none;
             }
         }
@@ -5746,7 +5799,7 @@
             /* Below dialogs (1000+) but above page content */
             cursor: pointer;
             transition: transform 0.2s ease;
-            width: 100px;
+            width: 90px;
             /* Adjust based on your image size */
         }
 
@@ -5765,7 +5818,7 @@
         /* Speech Bubble */
         .cat-speech-bubble {
             position: absolute;
-            bottom: 100%;
+            bottom: 90%;
             /* Position above the cat */
             right: -20px;
             background-color: var(--card-background);
@@ -5841,26 +5894,26 @@
 
         /* Style for the first info card */
         .skeleton-info-item:first-child {
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
         }
 
         /* Style for the last info card */
         .skeleton-info-item:last-child {
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
         }
 
         /* Style for the first course button skeleton */
         .skeleton-course-btn:first-child {
-            border-top-left-radius: 18px;
-            border-bottom-left-radius: 18px;
+            border-top-left-radius: var(--border-radius-lg);
+            border-bottom-left-radius: var(--border-radius-lg);
         }
 
         /* Style for the last course button skeleton */
         .skeleton-course-btn:last-child {
-            border-top-right-radius: 18px;
-            border-bottom-right-radius: 18px;
+            border-top-right-radius: var(--border-radius-lg);
+            border-bottom-right-radius: var(--border-radius-lg);
         }
 
         .skeleton-header {
